@@ -71,6 +71,24 @@ Expletive.profane?("words", config)
 
 ```
 
+### Built-in Blacklists
+
+The library comes with a couple of word lists ready to use:
+
+```Elixir
+
+config = Expletive.configure(blacklist: Expletive.Blacklist.english)
+
+Expletive.profane?("this is batshit crazy!", config)
+# => true
+
+config = Expletive.configure(blacklist: Expletive.Blacklist.international)
+
+Expletive.profanities("ceci n'est pas une pipe", config)
+# => ["pipe"]
+
+```
+
 ## Known limitations
 
 ### Profanities containing whitespace
