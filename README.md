@@ -71,7 +71,7 @@ Expletive.profane?("words", config)
 
 ```
 
-### Built-in Blacklists
+### Built-in blacklists
 
 The library comes with a couple of word lists ready to use:
 
@@ -89,12 +89,12 @@ Expletive.profanities("ceci n'est pas une pipe", config)
 
 ```
 
-## Known limitations
+## Known Limitations
 
 ### Profanities containing whitespace
 
 Profanities containing whitespace are not yet supported by the matching algorithm but it's definitely planned.
 
-### I18N Concerns
+### I18n concerns
 
 A couple of replacement strategies (`:vowels` and `:nonconsonants`) are currently limited to the english language.
