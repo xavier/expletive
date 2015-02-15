@@ -43,7 +43,7 @@ defmodule Expletive.Configuration do
               |> Enum.filter(fn word -> !(word in whitelist) end)
               |> Enum.map(&Regex.escape/1)
               |> Enum.join("|")
-    Regex.compile!("\\b(?:#{pattern})\\b", "i")
+    Regex.compile!("\\b(?:#{pattern})\\b", "iu")
   end
 
 end

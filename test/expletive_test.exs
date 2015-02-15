@@ -96,4 +96,14 @@ defmodule ExpletiveTest do
   test "replace expletives with a strategy overriding the current configuration", %{config: config} do
     assert "there are ---, ---- --- words" == Expletive.sanitize("there are bad, VERY BAD words", config, {:repeat, "-"})
   end
+
+  test "non-latin characters" do
+    config = Expletive.configure(blacklist: ["тест"], replacement: :stars)
+    IO.inspect config.regex
+    string = "This is a тест"
+    assert Expletive.profane?(string, config)
+    assert ["тест"] == Expletive.profanities(string, config)
+    assert "This is a ****" == Expletive.sanitize(string, config)
+    assert "This is a т***" == Expletive.sanitize(string, config, :keep_first_letter)
+  end
 end
