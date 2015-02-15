@@ -33,7 +33,7 @@ defmodule Expletive.Replacement do
   end
 
   def replace(word, {:keep_first_letter, custom}) do
-    prefix = String.at(word, 0)
+    prefix = String.first(word)
     suffix = String.duplicate(custom, String.length(word)-1)
     prefix <> suffix
   end
