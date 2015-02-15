@@ -91,10 +91,6 @@ Expletive.profanities("ceci n'est pas une pipe", config)
 
 ## Known Limitations
 
-### Profanities containing whitespace
-
-Profanities containing whitespace are not yet supported by the matching algorithm but it's definitely planned.
-
 ### I18n concerns
 
 A couple of replacement strategies (`:vowels` and `:nonconsonants`) are currently limited to the english language.

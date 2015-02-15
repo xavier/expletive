@@ -3,7 +3,7 @@ defmodule Expletive.Mixfile do
 
   def project do
     [app: :expletive,
-     version: "0.1.1",
+     version: "0.1.2",
      elixir: "~> 1.0",
      deps: deps,
      description: description,

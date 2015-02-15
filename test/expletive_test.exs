@@ -21,12 +21,19 @@ defmodule ExpletiveTest do
 
   test "presence of non-word characters around the profanity", %{config: config} do
     assert Expletive.profane?("#bad!", config)
-    assert Expletive.profane?("#bad-ass!", %{config | blacklist: Set.put(config.blacklist, "bad-ass")})
+    config = Expletive.configure(config, blacklist: ["bad-ass"|config.blacklist])
+    assert Expletive.profane?("#bad-ass!", config)
   end
 
   test "words in a string", %{config: config} do
     assert Expletive.profane?("some bad words", config)
     assert !Expletive.profane?("good words", config)
+  end
+
+  test "bad words with whitespace in a string" do
+    config = Expletive.configure(blacklist: ["bad word"])
+    assert Expletive.profane?("a bad word in a string", config)
+    assert Expletive.profane?("a BaD WoRd in a string", config)
   end
 
   test "find expletives in a string", %{config: config} do
@@ -56,7 +63,7 @@ defmodule ExpletiveTest do
   end
 
   test "replace expletives non-consonants with stars", %{config: config} do
-    config = %{config | replacement: :nonconsonants, blacklist: Set.put(config.blacklist, "b444d")}
+    config = Expletive.configure(config, replacement: :nonconsonants, blacklist: ["b444d"|config.blacklist])
     assert "there are b*d, V*RY B***D words" == Expletive.sanitize("there are bad, VERY B444D words", config)
   end
 

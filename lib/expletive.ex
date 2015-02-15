@@ -32,11 +32,19 @@ defmodule Expletive do
   end
 
   @doc """
+  Updates the configuration. Accepts the same options as `configure/1`
+  """
+  @spec configure(Configuration.t, list) :: Configuration.t
+  def configure(config, options) do
+    Configuration.update(config, options)
+  end
+
+  @doc """
   Returns `true` if the given string contains a word considered profane by the given configuration
   """
   @spec profane?(String.t, Configuration.t) :: boolean
   def profane?(string, config) do
-    string |> split_into_words |> Enum.any?(&expletive?(&1, config))
+    config.regex |> Regex.match?(string)
   end
 
   @doc """
@@ -44,7 +52,9 @@ defmodule Expletive do
   """
   @spec profanities(String.t, Configuration.t) :: [String.t]
   def profanities(string, config) do
-    string |> split_into_words |> Enum.filter(&expletive?(&1, config))
+    config.regex
+    |> Regex.scan(string)
+    |> Enum.map(fn [match] -> match end)
   end
 
   @doc """
@@ -52,13 +62,7 @@ defmodule Expletive do
   """
   @spec sanitize(String.t, Configuration.t) :: String.t
   def sanitize(string, config) do
-    Regex.replace(~r/\w+/, string, fn word ->
-      if expletive?(word, config) do
-        Replacement.replace(word, config.replacement)
-      else
-        word
-      end
-    end)
+    config.regex |> Regex.replace(string, fn word -> Replacement.replace(word, config.replacement) end)
   end
 
   @doc """
@@ -67,24 +71,6 @@ defmodule Expletive do
   @spec sanitize(String.t, Configuration.t, replacement) :: String.t
   def sanitize(string, config, replacement) do
     sanitize(string, %{config | replacement: replacement})
-  end
-
-  ###
-
-  defp expletive?(word, config) do
-    word |> normalize |> blacklisted?(config)
-  end
-
-  defp blacklisted?(word, config) do
-    (word in config.blacklist) && !(word in config.whitelist)
-  end
-
-  defp normalize(word) do
-    String.downcase(word)
-  end
-
-  defp split_into_words(string) do
-    string |> String.split(~r/[^\w]+/)
   end
 
 end
