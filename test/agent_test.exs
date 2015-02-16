@@ -28,4 +28,11 @@ defmodule AgentTest do
     assert "**** mots!" == Expletive.Agent.sanitize("GROS mots!", french)
   end
 
+  test "configure", %{english: english, french: french} do
+    Expletive.Agent.configure(french, whitelist: [])
+    Expletive.Agent.configure(english, blacklist: ["other"])
+    assert Expletive.Agent.profane?("mots", french)
+    assert Expletive.Agent.profane?("other", english)
+  end
+
 end

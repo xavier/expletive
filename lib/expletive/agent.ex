@@ -12,6 +12,11 @@ defmodule Expletive.Agent do
   end
 
   @doc ""
+  def configure(agent, options) do
+    Agent.update(agent, &Expletive.configure(&1, options))
+  end
+
+  @doc ""
   def profane?(string, agent) do
     Agent.get(agent, &Expletive.profane?(string, &1))
   end
