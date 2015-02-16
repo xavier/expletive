@@ -99,7 +99,6 @@ defmodule ExpletiveTest do
 
   test "non-latin characters" do
     config = Expletive.configure(blacklist: ["тест"], replacement: :stars)
-    IO.inspect config.regex
     string = "This is a тест"
     assert Expletive.profane?(string, config)
     assert ["тест"] == Expletive.profanities(string, config)
