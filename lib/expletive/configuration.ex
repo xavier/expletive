@@ -32,18 +32,31 @@ defmodule Expletive.Configuration do
   end
 
   defp compile(config) do
-    %{config | regex: compile_regex(config.blacklist, config.whitelist)}
+    %{config | regex: compile_regex(config)}
   end
 
   defp word_list(words) when is_binary(words), do: String.split(words)
   defp word_list(words) when is_list(words), do: words
 
-  defp compile_regex(blacklist, whitelist) do
-    pattern = blacklist
-              |> Enum.filter(fn word -> !(word in whitelist) end)
-              |> Enum.map(&Regex.escape/1)
-              |> Enum.join("|")
-    Regex.compile!("\\b(?:#{pattern})\\b", "iu")
+  defp compile_regex(config) do
+    config
+    |> collect_words_to_match
+    |> build_pattern
+    |> Regex.compile!("iu")
   end
+
+  def collect_words_to_match(config) do
+    Enum.filter(config.blacklist, fn word -> !(word in config.whitelist) end)
+  end
+
+  def build_pattern([]), do: "$." # will never match
+  def build_pattern(words) do
+    words
+    |> Enum.map(&Regex.escape/1)
+    |> Enum.join("|")
+    |> wrap_string("\\b(?:", ")\\b")
+  end
+
+  def wrap_string(string, prefix, suffix), do: "#{prefix}#{string}#{suffix}"
 
 end

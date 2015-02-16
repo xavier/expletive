@@ -105,4 +105,14 @@ defmodule ExpletiveTest do
     assert "This is a ****" == Expletive.sanitize(string, config)
     assert "This is a т***" == Expletive.sanitize(string, config, :keep_first_letter)
   end
+
+  test "empty blacklist" do
+    config = Expletive.configure(blacklist: [])
+    assert !Expletive.profane?("none to be found", config)
+  end
+
+  test "empty blacklist because of whitelist" do
+    config = Expletive.configure(blacklist: ~w[bad], whitelist: ~w[some bad words])
+    assert !Expletive.profane?("none to be found", config)
+  end
 end
