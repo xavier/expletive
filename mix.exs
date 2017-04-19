@@ -5,9 +5,9 @@ defmodule Expletive.Mixfile do
     [app: :expletive,
      version: "0.1.4",
      elixir: "~> 1.0",
-     deps: deps,
-     description: description,
-     package: package,
+     deps: deps(),
+     description: description(),
+     package: package(),
      source_url: "https://github.com/xavier/expletive",
      homepage_url: "https://github.com/xavier/expletive"]
   end
