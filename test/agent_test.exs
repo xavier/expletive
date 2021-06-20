@@ -2,8 +2,20 @@ defmodule AgentTest do
   use ExUnit.Case
 
   setup do
-    {:ok, english} = Expletive.Agent.start_link(blacklist: ~w[bad words], whitelist: ~w[words], replacement: "[redacted]")
-    {:ok, french}  = Expletive.Agent.start_link(blacklist: ~w[gros mots], whitelist: ~w[mots], replacement: :stars)
+    {:ok, english} =
+      Expletive.Agent.start_link(
+        blacklist: ~w[bad words],
+        whitelist: ~w[words],
+        replacement: "[redacted]"
+      )
+
+    {:ok, french} =
+      Expletive.Agent.start_link(
+        blacklist: ~w[gros mots],
+        whitelist: ~w[mots],
+        replacement: :stars
+      )
+
     {:ok, english: english, french: french}
   end
 
@@ -34,5 +46,4 @@ defmodule AgentTest do
     assert Expletive.Agent.profane?("mots", french)
     assert Expletive.Agent.profane?("other", english)
   end
-
 end

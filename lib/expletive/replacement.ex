@@ -1,5 +1,4 @@
 defmodule Expletive.Replacement do
-
   @moduledoc false
 
   @star "*"
@@ -12,8 +11,9 @@ defmodule Expletive.Replacement do
   @nonconsonants ~r/[^bcdfghjklmnpqrstvwxyz]/i
 
   def replace(word, :default), do: replace(word, :garbled)
+
   def replace(_, :garbled) do
-    @garble |> Enum.shuffle |> Enum.join
+    @garble |> Enum.shuffle() |> Enum.join()
   end
 
   def replace(word, :stars) do
@@ -34,7 +34,7 @@ defmodule Expletive.Replacement do
 
   def replace(word, {:keep_first_letter, custom}) do
     prefix = String.first(word)
-    suffix = String.duplicate(custom, String.length(word)-1)
+    suffix = String.duplicate(custom, String.length(word) - 1)
     prefix <> suffix
   end
 
@@ -45,5 +45,4 @@ defmodule Expletive.Replacement do
   def replace(_word, custom) when is_binary(custom) do
     custom
   end
-
 end

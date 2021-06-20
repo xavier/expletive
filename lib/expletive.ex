@@ -1,5 +1,4 @@
 defmodule Expletive do
-
   @moduledoc """
 
   A profanity detection and sanitization library.
@@ -9,7 +8,16 @@ defmodule Expletive do
   alias Expletive.Configuration, as: Configuration
   alias Expletive.Replacement, as: Replacement
 
-  @type replacement :: :default | :garbled | :stars | :vowels | :nonconsonants | String.t | {:repeat, String.t} | :keep_first_letter | {:keep_first_letter, String.t}
+  @type replacement ::
+          :default
+          | :garbled
+          | :stars
+          | :vowels
+          | :nonconsonants
+          | String.t()
+          | {:repeat, String.t()}
+          | :keep_first_letter
+          | {:keep_first_letter, String.t()}
 
   @doc """
   Returns a configuration to pass to other functions.
@@ -26,7 +34,7 @@ defmodule Expletive do
       * `:keep_first_letter` - Replace all characters but the first one by `*`
       * `{:keep_first_letter, string}` - Replace all characters but the first one by the given string
   """
-  @spec configure(list) :: Configuration.t
+  @spec configure(list) :: Configuration.t()
   def configure(options) do
     Configuration.new(options)
   end
@@ -34,7 +42,7 @@ defmodule Expletive do
   @doc """
   Updates the configuration. Accepts the same options as `configure/1`
   """
-  @spec configure(Configuration.t, list) :: Configuration.t
+  @spec configure(Configuration.t(), list) :: Configuration.t()
   def configure(config, options) do
     Configuration.update(config, options)
   end
@@ -42,7 +50,7 @@ defmodule Expletive do
   @doc """
   Returns `true` if the given string contains a word considered profane by the given configuration
   """
-  @spec profane?(String.t, Configuration.t) :: boolean
+  @spec profane?(String.t(), Configuration.t()) :: boolean
   def profane?(string, config) do
     config.regex |> Regex.match?(string)
   end
@@ -50,7 +58,7 @@ defmodule Expletive do
   @doc """
   Returns a list of profanities found in the given string.  All occurences are returned, duplicates may thus occur
   """
-  @spec profanities(String.t, Configuration.t) :: [String.t]
+  @spec profanities(String.t(), Configuration.t()) :: [String.t()]
   def profanities(string, config) do
     config.regex
     |> Regex.scan(string)
@@ -60,17 +68,17 @@ defmodule Expletive do
   @doc """
   Replace all profanities by a placeholder as defined by the `replacement` option of the current configuration
   """
-  @spec sanitize(String.t, Configuration.t) :: String.t
+  @spec sanitize(String.t(), Configuration.t()) :: String.t()
   def sanitize(string, config) do
-    config.regex |> Regex.replace(string, fn word -> Replacement.replace(word, config.replacement) end)
+    config.regex
+    |> Regex.replace(string, fn word -> Replacement.replace(word, config.replacement) end)
   end
 
   @doc """
   Replace all profanities by a placeholder as defined by the given `replacement` strategy
   """
-  @spec sanitize(String.t, Configuration.t, replacement) :: String.t
+  @spec sanitize(String.t(), Configuration.t(), replacement) :: String.t()
   def sanitize(string, config, replacement) do
     sanitize(string, %{config | replacement: replacement})
   end
-
 end

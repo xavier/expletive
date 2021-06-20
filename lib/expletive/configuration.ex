@@ -1,5 +1,4 @@
 defmodule Expletive.Configuration do
-
   @moduledoc false
 
   defstruct whitelist: [],
@@ -49,7 +48,9 @@ defmodule Expletive.Configuration do
     Enum.filter(config.blacklist, fn word -> !(word in config.whitelist) end)
   end
 
-  def build_pattern([]), do: "$." # will never match
+  # will never match
+  def build_pattern([]), do: "$."
+
   def build_pattern(words) do
     words
     |> Enum.map(&Regex.escape/1)
@@ -58,5 +59,4 @@ defmodule Expletive.Configuration do
   end
 
   def wrap_string(string, prefix, suffix), do: "#{prefix}#{string}#{suffix}"
-
 end

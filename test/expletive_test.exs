@@ -21,7 +21,7 @@ defmodule ExpletiveTest do
 
   test "presence of non-word characters around the profanity", %{config: config} do
     assert Expletive.profane?("#bad!", config)
-    config = Expletive.configure(config, blacklist: ["bad-ass"|config.blacklist])
+    config = Expletive.configure(config, blacklist: ["bad-ass" | config.blacklist])
     assert Expletive.profane?("#bad-ass!", config)
   end
 
@@ -54,17 +54,27 @@ defmodule ExpletiveTest do
 
   test "replace expletives with stars", %{config: config} do
     config = %{config | replacement: :stars}
-    assert "there are ***, **** *** words" == Expletive.sanitize("there are bad, VERY BAD words", config)
+
+    assert "there are ***, **** *** words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config)
   end
 
   test "replace expletives vowels with stars", %{config: config} do
     config = %{config | replacement: :vowels}
-    assert "there are b*d, V*RY B*D words" == Expletive.sanitize("there are bad, VERY BAD words", config)
+
+    assert "there are b*d, V*RY B*D words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config)
   end
 
   test "replace expletives non-consonants with stars", %{config: config} do
-    config = Expletive.configure(config, replacement: :nonconsonants, blacklist: ["b444d"|config.blacklist])
-    assert "there are b*d, V*RY B***D words" == Expletive.sanitize("there are bad, VERY B444D words", config)
+    config =
+      Expletive.configure(config,
+        replacement: :nonconsonants,
+        blacklist: ["b444d" | config.blacklist]
+      )
+
+    assert "there are b*d, V*RY B***D words" ==
+             Expletive.sanitize("there are bad, VERY B444D words", config)
   end
 
   test "replace expletives with garbled text", %{config: config} do
@@ -80,21 +90,30 @@ defmodule ExpletiveTest do
 
   test "replace expletives with a repeated custom string", %{config: config} do
     config = %{config | replacement: {:repeat, "-"}}
-    assert "there are ---, ---- --- words" == Expletive.sanitize("there are bad, VERY BAD words", config)
+
+    assert "there are ---, ---- --- words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config)
   end
 
   test "replace expletives with stars, except the first letter", %{config: config} do
     config = %{config | replacement: :keep_first_letter}
-    assert "there are b**, V*** B** words" == Expletive.sanitize("there are bad, VERY BAD words", config)
+
+    assert "there are b**, V*** B** words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config)
   end
 
   test "replace expletives with the given character, except the first letter", %{config: config} do
     config = %{config | replacement: {:keep_first_letter, "-"}}
-    assert "there are b--, V--- B-- words" == Expletive.sanitize("there are bad, VERY BAD words", config)
+
+    assert "there are b--, V--- B-- words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config)
   end
 
-  test "replace expletives with a strategy overriding the current configuration", %{config: config} do
-    assert "there are ---, ---- --- words" == Expletive.sanitize("there are bad, VERY BAD words", config, {:repeat, "-"})
+  test "replace expletives with a strategy overriding the current configuration", %{
+    config: config
+  } do
+    assert "there are ---, ---- --- words" ==
+             Expletive.sanitize("there are bad, VERY BAD words", config, {:repeat, "-"})
   end
 
   test "non-latin characters" do

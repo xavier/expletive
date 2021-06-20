@@ -1,5 +1,4 @@
 defmodule Expletive.Agent do
-
   @moduledoc false
 
   #

@@ -33,5 +33,4 @@ defmodule ConfigurationTest do
     assert updated.regex != original.regex
     assert updated.replacement != original.replacement
   end
-
 end
