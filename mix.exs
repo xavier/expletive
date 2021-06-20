@@ -40,7 +40,7 @@ defmodule Expletive.Mixfile do
 
   defp package do
     [
-      files: ["lib", "data", "priv", "mix.exs", "README*", "LICENSE*"],
+      files: ["lib", "data", "mix.exs", "README*", "LICENSE*"],
       contributors: ["Xavier Defrang"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/xavier/expletive"}
