@@ -9,7 +9,7 @@ Add Expletive as a dependency to your project `mix.exs`:
 ```Elixir
 
 def deps do
-  [{:expletive, "~> 0.1.5"}]
+  [{:expletive, "~> 0.1.0"}]
 end
 
 ```
