@@ -1,4 +1,4 @@
-# Expletive
+# Expletive [![hex.pm](https://img.shields.io/hexpm/v/expletive)](https://hex.pm/packages/expletive)
 
 An obscenity detection and filtering library for Elixir, freely inspired by the [obscenity gem](https://github.com/tjackiw/obscenity).
 
@@ -9,7 +9,7 @@ Add Expletive as a dependency to your project `mix.exs`:
 ```Elixir
 
 def deps do
-  [{:expletive, "~> 0.1.0"}]
+  [{:expletive, "~> 0.1.5"}]
 end
 
 ```
