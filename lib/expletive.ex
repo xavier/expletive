@@ -24,6 +24,7 @@ defmodule Expletive do
 
   * `:blacklist` - A list of words which are considered profane (if a string is given, it will be split on whitespace to create the world list)
   * `:whitelist` - A list of words which are allowed even if they're also present in the blacklist (if a string is given, it will be split on whitespace to create the world list)
+  * `:match_substrings` - Whether to match substrings within words (default: `false`). When `true`, enables substring matching.
   * `:replacement` - A replacement strategy:
       * `:garbled` - Replace by a random permutation of `$@!#%` (default)
       * `:stars` - Replace all characters by `*`
@@ -48,7 +49,7 @@ defmodule Expletive do
   end
 
   @doc """
-  Returns `true` if the given string contains a word considered profane by the given configuration, including substrings.
+  Returns `true` if the given string contains a word considered profane by the given configuration.
   """
   @spec profane?(String.t(), Configuration.t()) :: boolean
   def profane?(string, config) do

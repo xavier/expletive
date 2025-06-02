@@ -135,9 +135,30 @@ defmodule ExpletiveTest do
     assert !Expletive.profane?("none to be found", config)
   end
 
-  test "substring matching for profane words", %{config: config} do
+  test "substring in a string" do
+    config = Expletive.configure(blacklist: ~w[very bad words], whitelist: ~w[words], match_substrings: true)
     assert Expletive.profane?("badword", config)
     assert Expletive.profane?("verybadword", config)
     assert !Expletive.profane?("safe", config)
+  end
+
+  test "find expletives when matching substrings" do
+    config_with_substrings = Expletive.configure(blacklist: ~w[bad test], match_substrings: true)
+    config_no_substrings = Expletive.configure(blacklist: ~w[bad test], match_substrings: false)
+
+    assert ["bad", "test"] == Expletive.profanities("badword and testing", config_with_substrings)
+
+    assert [] == Expletive.profanities("badword and testing", config_no_substrings)
+    assert ["bad", "test"] == Expletive.profanities("bad and test", config_no_substrings)
+  end
+
+  test "replace expletives when matching substrings" do
+    config_with_substrings = Expletive.configure(blacklist: ~w[bad test], match_substrings: true, replacement: :stars)
+    config_no_substrings = Expletive.configure(blacklist: ~w[bad test], match_substrings: false, replacement: :stars)
+
+    assert "***word and ****ing" == Expletive.sanitize("badword and testing", config_with_substrings)
+
+    assert "badword and testing" == Expletive.sanitize("badword and testing", config_no_substrings)
+    assert "*** and ****" == Expletive.sanitize("bad and test", config_no_substrings)
   end
 end

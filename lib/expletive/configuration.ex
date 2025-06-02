@@ -4,6 +4,7 @@ defmodule Expletive.Configuration do
   defstruct whitelist: [],
             blacklist: [],
             replacement: :default,
+            match_substrings: false,
             regex: nil
 
   def new(options) do
@@ -30,6 +31,10 @@ defmodule Expletive.Configuration do
     %{config | replacement: value}
   end
 
+  defp update_config(config, :match_substrings, value) do
+    %{config | match_substrings: value}
+  end
+
   defp compile(config) do
     %{config | regex: compile_regex(config)}
   end
@@ -40,7 +45,7 @@ defmodule Expletive.Configuration do
   defp compile_regex(config) do
     config
     |> collect_words_to_match
-    |> build_pattern
+    |> build_pattern(config.match_substrings)
     |> Regex.compile!("iu")
   end
 
@@ -49,13 +54,22 @@ defmodule Expletive.Configuration do
   end
 
   # will never match
-  def build_pattern([]), do: "$."
+  def build_pattern([], _match_substrings), do: "$."
 
-  def build_pattern(words) do
-    words
-    |> Enum.map(&Regex.escape/1)
-    |> Enum.join("|")
-    |> wrap_string("(?:", ")")
+  def build_pattern(words, match_substrings) do
+    escaped_words = Enum.map(words, &Regex.escape/1)
+
+    pattern =
+      if match_substrings do
+        escaped_words 
+        |> Enum.join("|")
+      else
+        escaped_words
+        |> Enum.map(fn word -> "\\b#{word}\\b" end)
+        |> Enum.join("|")
+      end
+
+    wrap_string(pattern, "(?:", ")")
   end
 
   def wrap_string(string, prefix, suffix), do: "#{prefix}#{string}#{suffix}"
