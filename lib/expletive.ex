@@ -48,11 +48,11 @@ defmodule Expletive do
   end
 
   @doc """
-  Returns `true` if the given string contains a word considered profane by the given configuration
+  Returns `true` if the given string contains a word considered profane by the given configuration, including substrings.
   """
   @spec profane?(String.t(), Configuration.t()) :: boolean
   def profane?(string, config) do
-    config.regex |> Regex.match?(string)
+    Regex.match?(config.regex, string)
   end
 
   @doc """

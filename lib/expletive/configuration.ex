@@ -55,7 +55,7 @@ defmodule Expletive.Configuration do
     words
     |> Enum.map(&Regex.escape/1)
     |> Enum.join("|")
-    |> wrap_string("\\b(?:", ")\\b")
+    |> wrap_string("(?:", ")")
   end
 
   def wrap_string(string, prefix, suffix), do: "#{prefix}#{string}#{suffix}"

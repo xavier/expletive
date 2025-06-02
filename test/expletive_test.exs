@@ -134,4 +134,10 @@ defmodule ExpletiveTest do
     config = Expletive.configure(blacklist: ~w[bad], whitelist: ~w[some bad words])
     assert !Expletive.profane?("none to be found", config)
   end
+
+  test "substring matching for profane words", %{config: config} do
+    assert Expletive.profane?("badword", config)
+    assert Expletive.profane?("verybadword", config)
+    assert !Expletive.profane?("safe", config)
+  end
 end
