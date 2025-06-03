@@ -33,4 +33,28 @@ defmodule ConfigurationTest do
     assert updated.regex != original.regex
     assert updated.replacement != original.replacement
   end
+
+  test "setting match_substrings with true" do
+    config = Configuration.new(blacklist: ["bad", "words"], match_substrings: true)
+    assert config.match_substrings == true
+    assert config.regex
+  end
+
+  test "setting match_substrings with false" do
+    config = Configuration.new(blacklist: ["bad", "words"], match_substrings: false)
+    assert config.match_substrings == false
+    assert config.regex
+  end
+
+  test "default match_substrings value" do
+    config = Configuration.new(blacklist: ["bad", "words"])
+    assert config.match_substrings == false
+  end
+
+  test "update match_substrings configuration" do
+    original = Configuration.new(blacklist: "bad words", match_substrings: true)
+    updated = Configuration.update(original, match_substrings: false)
+    assert updated.match_substrings == false
+    assert updated.regex != original.regex
+  end
 end

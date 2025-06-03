@@ -4,9 +4,7 @@ defmodule BlacklistTest do
   alias Expletive.Blacklist, as: Blacklist
 
   @english_blacklist_config Expletive.configure(blacklist: Expletive.Blacklist.english())
-  @international_blacklist_config Expletive.configure(
-                                    blacklist: Expletive.Blacklist.international()
-                                  )
+  @international_blacklist_config Expletive.configure(blacklist: Expletive.Blacklist.international())
 
   test "english blacklist" do
     assert Enum.member?(Blacklist.english(), "wrapping the weasel")
