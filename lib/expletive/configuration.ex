@@ -61,7 +61,7 @@ defmodule Expletive.Configuration do
 
     pattern =
       if match_substrings do
-        escaped_words 
+        escaped_words
         |> Enum.join("|")
       else
         escaped_words
